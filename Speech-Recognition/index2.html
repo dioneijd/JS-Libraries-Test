@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech Recognition</title>
+
+
+
+</head>
+<body>
+    <h1>List words</h1>
+    <button onclick=captarVoz()>Iniciar</button>
+    <button onclick=pararCaptar()>Parar</button>
+
+    <h3 id="texto">Clique Iniciar...</h3>
+
+    <ul>
+        <li></li>
+    </ul>
+
+
+    <script>
+        const recognition = new webkitSpeechRecognition()
+        recognition.interimResults = true
+        recognition.lang = 'pt-BR'
+        recognition.continuous = true
+
+        
+        recognition.onresult = function (event) {
+            let final = 0
+
+            var i = event.results.length - 1
+
+            document.getElementById('texto').innerText = event.results[i][final].transcript.trim()
+
+            if (event.results[i].isFinal) {
+                var ul = document.querySelector('ul')
+
+                ul.innerHTML = `<li>${event.results[i][final].transcript.trim()}</li> ${ul.innerHTML}`
+                final++
+                document.getElementById('texto').innerText = "escutando ..."
+            }
+
+
+        }
+
+
+
+        
+        function captarVoz() {
+            recognition.start()
+                document.getElementById('texto').innerText = "escutando ..."
+        }
+        
+        function pararCaptar() {
+            recognition.stop()
+                document.getElementById('texto').innerText = "Clique Iniciar..."
+        }
+
+
+    </script>
+
+</body>
+</html>

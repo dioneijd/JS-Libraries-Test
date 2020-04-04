@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech Recognition</title>
+</head>
+<body>
+    <h3 id="texto"></h3>
+    <button onclick=captarVoz()>Capar voz</button>
+
+    <script>        
+        function captarVoz(){
+            const recognition = new webkitSpeechRecognition()
+            recognition.interimResults = true
+            recognition.lang = 'pt-BR'
+            recognition.continuous = true
+            recognition.start()
+            recognition.onresult = function (event) {
+
+                for (let i = event.resultIndex; i < event.results.length ; i++) {
+                    if (event.results[i].isFinal) {
+                        document.getElementById('texto').innerText = event.results[i][0].transcript.trim()
+                    }
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>
